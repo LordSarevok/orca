@@ -74,7 +74,12 @@ class Orca::Node
   end
 
   def sudo(cmd, opts={})
-    execute("sudo #{cmd}", opts)
+    with_external_password = opts[:with_external_password]
+    if with_external_password.is_a?(String)
+      execute("echo #{with_external_password} | sudo -S  #{cmd}", opts)
+    else
+      execute("sudo #{cmd}", opts)
+    end
   end
 
   def log
