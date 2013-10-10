@@ -74,7 +74,11 @@ class Orca::Node
   end
 
   def sudo(cmd, opts={})
-    execute("sudo #{cmd}", opts)
+    if @options[:password].is_a?(String)
+      execute("echo #{@options[:password]} | sudo -S  #{cmd}", opts)
+    else
+      execute("sudo #{cmd}", opts)
+    end
   end
 
   def log
